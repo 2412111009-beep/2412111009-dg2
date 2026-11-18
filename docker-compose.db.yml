@@ -1,0 +1,15 @@
+# Lớp bổ sung của thành viên 2: xem bảng, trigger, dữ liệu CSDL tại http://localhost:8080
+# Chạy: docker compose -f docker-compose.yml -f docker-compose.db.yml up -d --build
+# Chỉ mở cho máy của bạn (127.0.0.1) vì CSDL chứa mật khẩu đã băm. KHÔNG dùng khi triển khai công khai.
+services:
+  dbviewer:
+    build: ./docker/dbviewer
+    image: labbook-dbviewer:latest
+    container_name: labbook-dbviewer
+    restart: unless-stopped
+    depends_on:
+      - web
+    ports:
+      - "127.0.0.1:${DBVIEWER_PORT:-8080}:8080"
+    volumes:
+      - labbook_data:/data:ro
